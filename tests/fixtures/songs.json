@@ -1,0 +1,20 @@
+[
+    {
+        "id": 400,
+        "name": "Turned Clouds",
+        "slug": "turned-clouds",
+        "isoriginal": 1,
+        "original_artist": "Goose",
+        "created_at": "1000-01-01 00:00:00",
+        "updated_at": "2024-03-11 16:20:28"
+      },
+      {
+        "id": 403,
+        "name": "Arcadia",
+        "slug": "arcadia",
+        "isoriginal": 1,
+        "original_artist": "Goose",
+        "created_at": "1000-01-01 00:00:00",
+        "updated_at": "2023-07-07 15:43:16"
+      }
+]

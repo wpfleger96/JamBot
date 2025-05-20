@@ -1,0 +1,32 @@
+[project]
+name = "jambot"
+version = "0.0.1"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "mcp[cli]>=1.9.0",
+    "pydantic>=2.11.4",
+    "pytest>=8.3.5",
+    "requests>=2.32.3",
+]
+license = "MIT"
+authors = [ { name = "Will Pfleger", email = "pfleger.will@gmail.com" }]
+
+[project.scripts]
+jambot = "jambot.__main__:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build]
+include = [
+    "README.md"
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/jambot"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src/jambot"]

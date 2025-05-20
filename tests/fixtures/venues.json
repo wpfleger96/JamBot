@@ -1,0 +1,22 @@
+[
+    {
+        "venue_id": 1,
+        "venuename": "Madison Theater",
+        "city": "Covington",
+        "state": "KY",
+        "country": "USA",
+        "zip": "41011",
+        "capacity": 1200,
+        "slug": "madison-theater-covington-ky-usa"
+      },
+      {
+        "venue_id": 2,
+        "venuename": "Peach Music Festival",
+        "city": "Scranton",
+        "state": "PA",
+        "country": "USA",
+        "zip": "18507",
+        "capacity": 0,
+        "slug": "peach-music-festival-scranton-pa-usa"
+      }
+]
