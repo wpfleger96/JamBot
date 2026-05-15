@@ -1,14 +1,16 @@
-from importlib.metadata import version
-from typing import Optional, List
-import requests
+"""Jambot MCP Server main module."""
+
 import json
-from urllib.parse import urlencode
+from functools import wraps
+from importlib.metadata import version
+from typing import Any, Awaitable, Callable, List, Optional
+
+from fastmcp import FastMCP
+from fastmcp.exceptions import ToolError
 from pydantic import BaseModel
 
-from mcp.server.fastmcp import FastMCP
-
-from jambot import utils
-from jambot.constants import SUPPORTED_BANDS_MAP, RESOURCE_TYPES, FORMATS, RESOURCE_MODEL_MAP
+from jambot import resources, utils
+from jambot.constants import RESOURCE_MODEL_MAP, RESOURCE_TYPES, SUPPORTED_BANDS_MAP
 
 INSTRUCTIONS = f"""
 Jambot v{version('jambot')}
@@ -23,45 +25,73 @@ REQUIRED READING:
 - To view the schema for a specific resource type, read the `docs://schemas/{{resource_type}}` resource.
 """
 
-server = FastMCP(
+mcp = FastMCP(
     name="jambot",
-    instructions=INSTRUCTIONS
+    instructions=INSTRUCTIONS,
 )
+
+
+def tool_error_boundary(
+    func: Callable[..., Awaitable[Any]],
+) -> Callable[..., Awaitable[Any]]:
+    """Convert common tool failures into ToolError so FastMCP sets isError=true."""
+
+    @wraps(func)
+    async def wrapper(*args, **kwargs) -> Any:
+        try:
+            return await func(*args, **kwargs)
+        except ToolError:
+            raise
+        except Exception as exc:
+            response = getattr(exc, "response", None)
+            if response is not None:
+                message = response.text
+            else:
+                message = str(exc)
+            raise ToolError(message) from exc
+
+    return wrapper
 
 
 """
 MCP Server Documentation
 """
-@server.resource("docs://resource_types")
+
+
+@mcp.resource("docs://resource_types")
 def get_resource_types() -> str:
     return json.dumps(RESOURCE_TYPES, indent=2)
 
-@server.resource("docs://schemas/{resource_type}")
+
+@mcp.resource("docs://schemas/{resource_type}")
 def get_schema(resource_type: str) -> str:
     return json.dumps(utils.model_to_schema(RESOURCE_MODEL_MAP[resource_type]), indent=2)
 
-@server.resource("docs://supported_bands")
+
+@mcp.resource("docs://supported_bands")
 def get_supported_bands() -> str:
     result = []
     for band in SUPPORTED_BANDS_MAP:
-        result.append({
-            "name": SUPPORTED_BANDS_MAP[band]['name'],
-            "band_code": band
-        })
+        result.append({"name": SUPPORTED_BANDS_MAP[band]["name"], "band_code": band})
     return json.dumps(result, indent=2)
 
 
 """
 MCP Server Tools
 """
-@server.tool("get_resources")
-def get_resources(*,
-                 band: str,
-                 resource_type: str,
-                 format: Optional[str] = "json",
-                 order_by: Optional[str] = None,
-                 direction: Optional[str] = None,
-                 limit: Optional[int] = None) -> List[BaseModel]:
+
+
+@mcp.tool()
+@tool_error_boundary
+async def get_resources(
+    *,
+    band: str,
+    resource_type: str,
+    format: Optional[str] = "json",
+    order_by: Optional[str] = None,
+    direction: Optional[str] = None,
+    limit: Optional[int] = None,
+) -> List[BaseModel]:
     """Get all resources for a given band and resource type.
 
     Args:
@@ -72,40 +102,25 @@ def get_resources(*,
         direction (str): The direction to order the resources by, either "asc" or "desc". Defaults to "asc".
         limit (int): The maximum number of resources to return. Defaults to None.
     """
-    utils.validate_band(band)
-    utils.validate_resource_type(resource_type)
-    utils.validate_format(format)
-    if order_by:
-        utils.validate_order_by(order_by, resource_type)
-    if direction:
-        utils.validate_direction(direction)
+    return await resources.list_resources(
+        band=band,
+        resource_type=resource_type,
+        format=format,
+        order_by=order_by,
+        direction=direction,
+        limit=limit,
+    )
 
-    url = f"{SUPPORTED_BANDS_MAP[band]['url']}/{resource_type}.{format}"
 
-    params = {k: v for k, v in {
-        'order_by': order_by,
-        'direction': direction,
-        'limit': limit
-    }.items() if v is not None}
-
-    if params:
-        url += f"?{urlencode(params)}"
-
-    try:
-        response = requests.get(url)
-        response.raise_for_status()
-        response_data = response.json()
-        model_class = RESOURCE_MODEL_MAP[resource_type]
-        return [model_class(**item) for item in response_data["data"]]
-    except Exception as e:
-        raise ValueError(f"Error getting resource for {band} and {resource_type}: {e}.")
-    
-@server.tool("get_resource")
-def get_resource(*,
-                 id: str,
-                 band: str,
-                 resource_type: str,
-                 format: Optional[str] = "json") -> BaseModel:
+@mcp.tool()
+@tool_error_boundary
+async def get_resource(
+    *,
+    id: str,
+    band: str,
+    resource_type: str,
+    format: Optional[str] = "json",
+) -> BaseModel:
     """Get a specific resource for a given band and resource type by its ID.
 
     Args:
@@ -114,27 +129,24 @@ def get_resource(*,
         resource_type (str): The resource type to get.
         format (str): The format to get the resource in. Defaults to "json".
     """
-    utils.validate_band(band)
-    utils.validate_resource_type(resource_type)
-    utils.validate_format(format)
+    return await resources.show_resource(
+        id=id,
+        band=band,
+        resource_type=resource_type,
+        format=format,
+    )
 
-    url = f"{SUPPORTED_BANDS_MAP[band]['url']}/{resource_type}/{id}.{format}"
-    try:
-        response = requests.get(url)
-        response.raise_for_status()
-        response_data = response.json()
-        model_class = RESOURCE_MODEL_MAP[resource_type]
-        return model_class(**response_data)
-    except Exception as e:
-        raise ValueError(f"Error getting resource for {band} and {resource_type}: {e}.")
 
-@server.tool("query_resources")
-def query_resources(*,
-                    query_column: str,
-                    query_value: str,
-                    band: str,
-                    resource_type: str,
-                    format: Optional[str] = "json") -> List[BaseModel]:
+@mcp.tool()
+@tool_error_boundary
+async def query_resources(
+    *,
+    query_column: str,
+    query_value: str,
+    band: str,
+    resource_type: str,
+    format: Optional[str] = "json",
+) -> List[BaseModel]:
     """Query resources for a given band and resource type by a query column and query value.
 
     Args:
@@ -144,17 +156,10 @@ def query_resources(*,
         resource_type (str): The resource type to query on.
         format (str): The format to get the resource in. Defaults to "json".
     """
-    utils.validate_band(band)
-    utils.validate_resource_type(resource_type)
-    utils.validate_format(format)
-
-    url = f"{SUPPORTED_BANDS_MAP[band]['url']}/{resource_type}/{query_column}/{query_value}.{format}"
-    try:
-        response = requests.get(url)
-        response.raise_for_status()
-        response_data = response.json()
-        model_class = RESOURCE_MODEL_MAP[resource_type]
-        return [model_class(**item) for item in response_data["data"]]
-    except Exception as e:
-        raise ValueError(f"Error querying resources for {band} and {resource_type}: {e}.")
-    
+    return await resources.query_resources_by_column(
+        query_column=query_column,
+        query_value=query_value,
+        band=band,
+        resource_type=resource_type,
+        format=format,
+    )
