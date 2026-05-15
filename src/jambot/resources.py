@@ -2,13 +2,11 @@
 
 import logging
 from typing import List, Optional
-from urllib.parse import urlencode
 
 from pydantic import BaseModel
 
 from jambot import validation
-from jambot.async_utils import safe_execute_async
-from jambot.client import get_session
+from jambot.client import get_client
 from jambot.constants import RESOURCE_MODEL_MAP, SUPPORTED_BANDS_MAP
 from jambot.errors import JambotError
 
@@ -39,14 +37,10 @@ async def list_resources(
         for k, v in {"order_by": order_by, "direction": direction, "limit": limit}.items()
         if v is not None
     }
-    if params:
-        url += f"?{urlencode(params)}"
 
-    session = get_session()
+    client = get_client()
     try:
-        response = await safe_execute_async(
-            lambda: session.get(url), f"list {resource_type} for {band}"
-        )
+        response = await client.get(url, params=params)
         response.raise_for_status()
         response_data = response.json()
         model_class = RESOURCE_MODEL_MAP[resource_type]
@@ -70,11 +64,9 @@ async def show_resource(
     validation.validate_format(format)
 
     url = f"{SUPPORTED_BANDS_MAP[band]['url']}/{resource_type}/{id}.{format}"
-    session = get_session()
+    client = get_client()
     try:
-        response = await safe_execute_async(
-            lambda: session.get(url), f"show {resource_type} {id} for {band}"
-        )
+        response = await client.get(url)
         response.raise_for_status()
         response_data = response.json()
         model_class = RESOURCE_MODEL_MAP[resource_type]
@@ -102,12 +94,9 @@ async def query_resources_by_column(
         f"{SUPPORTED_BANDS_MAP[band]['url']}/{resource_type}/"
         f"{query_column}/{query_value}.{format}"
     )
-    session = get_session()
+    client = get_client()
     try:
-        response = await safe_execute_async(
-            lambda: session.get(url),
-            f"query {resource_type} by {query_column}={query_value} for {band}",
-        )
+        response = await client.get(url)
         response.raise_for_status()
         response_data = response.json()
         model_class = RESOURCE_MODEL_MAP[resource_type]

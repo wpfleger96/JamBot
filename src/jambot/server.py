@@ -10,6 +10,7 @@ from fastmcp.exceptions import ToolError
 from pydantic import BaseModel
 
 from jambot import resources, utils
+from jambot.client import lifespan
 from jambot.constants import RESOURCE_MODEL_MAP, RESOURCE_TYPES, SUPPORTED_BANDS_MAP
 
 INSTRUCTIONS = f"""
@@ -28,6 +29,7 @@ REQUIRED READING:
 mcp = FastMCP(
     name="jambot",
     instructions=INSTRUCTIONS,
+    lifespan=lifespan,
 )
 
 
