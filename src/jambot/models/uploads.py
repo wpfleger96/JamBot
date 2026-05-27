@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional
 
+
 class Upload(BaseModel):
     """
     Model for an upload response. Uploads are an array of dictionaries, where each dictionary represents an external upload.
@@ -20,6 +21,7 @@ class Upload(BaseModel):
         ...
     ]
     """
+
     id: int
     show_id: str
     showdate: str

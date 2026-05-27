@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional
+
 
 class Links(BaseModel):
     """
@@ -17,6 +17,7 @@ class Links(BaseModel):
         ...
     ]
     """
+
     link_id: int
     show_id: int
     description: str

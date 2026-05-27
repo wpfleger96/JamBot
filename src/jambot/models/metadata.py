@@ -1,9 +1,10 @@
 from pydantic import BaseModel
 
+
 class Metadata(BaseModel):
     """
     Model for a metadata response. Metadata is a an array of dictionaries, where each dictionary represents a metadata entry.
-    
+
     Example response:
     [
         {
@@ -26,6 +27,7 @@ class Metadata(BaseModel):
         ...
     ]
     """
+
     show_id: int
     showdate: str
     artist: str

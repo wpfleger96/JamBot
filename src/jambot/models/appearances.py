@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional
+
 
 class Appearance(BaseModel):
     """
@@ -21,6 +21,7 @@ class Appearance(BaseModel):
         ...
     ]
     """
+
     show_id: int
     showdate: str
     artist_id: int

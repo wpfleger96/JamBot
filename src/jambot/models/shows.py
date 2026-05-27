@@ -1,10 +1,11 @@
 from pydantic import BaseModel
 from typing import Optional
 
+
 class Show(BaseModel):
     """
     Model for a show response. Shows are an array of dictionaries, where each dictionary represents a show.
-    
+
     Example response:
     [
         {
@@ -32,8 +33,9 @@ class Show(BaseModel):
         },
         ...
     ]
-    
+
     """
+
     show_id: int
     showdate: str
     permalink: str

@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional
 
+
 class Setlist(BaseModel):
     """
     Model for a setlist response. Setslists are an array of dictionaries, each representing a song in the setlist.
@@ -50,6 +51,7 @@ class Setlist(BaseModel):
         ...
     ]
     """
+
     artist: Optional[str]
     artist_id: Optional[int]
     city: Optional[str]

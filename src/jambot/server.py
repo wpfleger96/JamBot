@@ -14,7 +14,7 @@ from jambot.client import lifespan
 from jambot.constants import RESOURCE_MODEL_MAP, RESOURCE_TYPES, SUPPORTED_BANDS_MAP
 
 INSTRUCTIONS = f"""
-Jambot v{version('jambot')}
+Jambot v{version("jambot")}
 
 REQUIRED READING:
 - You are Jambot MCP server. You query for jam band resources in the following ways:
@@ -67,7 +67,9 @@ def get_resource_types() -> str:
 
 @mcp.resource("docs://schemas/{resource_type}")
 def get_schema(resource_type: str) -> str:
-    return json.dumps(utils.model_to_schema(RESOURCE_MODEL_MAP[resource_type]), indent=2)
+    return json.dumps(
+        utils.model_to_schema(RESOURCE_MODEL_MAP[resource_type]), indent=2
+    )
 
 
 @mcp.resource("docs://supported_bands")
@@ -89,7 +91,7 @@ async def get_resources(
     *,
     band: str,
     resource_type: str,
-    format: Optional[str] = "json",
+    format: str = "json",
     order_by: Optional[str] = None,
     direction: Optional[str] = None,
     limit: Optional[int] = None,
@@ -121,7 +123,7 @@ async def get_resource(
     id: str,
     band: str,
     resource_type: str,
-    format: Optional[str] = "json",
+    format: str = "json",
 ) -> BaseModel:
     """Get a specific resource for a given band and resource type by its ID.
 
@@ -147,7 +149,7 @@ async def query_resources(
     query_value: str,
     band: str,
     resource_type: str,
-    format: Optional[str] = "json",
+    format: str = "json",
 ) -> List[BaseModel]:
     """Query resources for a given band and resource type by a query column and query value.
 

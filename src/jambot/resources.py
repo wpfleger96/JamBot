@@ -34,7 +34,11 @@ async def list_resources(
     url = f"{SUPPORTED_BANDS_MAP[band]['url']}/{resource_type}.{format}"
     params = {
         k: v
-        for k, v in {"order_by": order_by, "direction": direction, "limit": limit}.items()
+        for k, v in {
+            "order_by": order_by,
+            "direction": direction,
+            "limit": limit,
+        }.items()
         if v is not None
     }
 

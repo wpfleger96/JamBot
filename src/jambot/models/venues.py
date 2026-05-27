@@ -1,10 +1,10 @@
 from pydantic import BaseModel
-from typing import Optional
+
 
 class Venue(BaseModel):
     """
     Model for a venue response. Venues are an array of dictionaries, where each dictionary represents a venue.
-    
+
     Example response:
     [
         {
@@ -20,6 +20,7 @@ class Venue(BaseModel):
         ...
     ]
     """
+
     venue_id: int
     venuename: str
     city: str
