@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional
+
 
 class Song(BaseModel):
     """
@@ -19,6 +19,7 @@ class Song(BaseModel):
         ...
     ]
     """
+
     id: int
     name: str
     slug: str

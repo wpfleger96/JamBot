@@ -1,6 +1,11 @@
 """Validation helpers for Jambot tool inputs."""
 
-from jambot.constants import FORMATS, RESOURCE_MODEL_MAP, RESOURCE_TYPES, SUPPORTED_BANDS_MAP
+from jambot.constants import (
+    FORMATS,
+    RESOURCE_MODEL_MAP,
+    RESOURCE_TYPES,
+    SUPPORTED_BANDS_MAP,
+)
 from jambot.errors import JambotValidationError
 
 

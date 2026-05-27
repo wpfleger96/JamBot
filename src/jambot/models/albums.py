@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional
 
+
 class Album(BaseModel):
     """
     Model for an album response. Albums are an array of dictionaries, where each dictionary represents a song in the album.
@@ -28,6 +29,7 @@ class Album(BaseModel):
         ...
     ]
     """
+
     album_title: str
     album_displayname: str
     artist: str
