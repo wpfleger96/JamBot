@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional
 
+
 class Jamchart(BaseModel):
     """
     Model for a jamchart response. Jamcharts are an array of dictionaries, where each dictionary represents a jam in a song.
@@ -31,6 +32,7 @@ class Jamchart(BaseModel):
         ...
     ]
     """
+
     uniqueid: str
     setnumber: str
     position: int

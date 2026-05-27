@@ -11,7 +11,9 @@ def pytest_configure(config):
     )
     config.addinivalue_line("markers", "server: Tests for the server sub-module")
     config.addinivalue_line("markers", "resources: Tests for the resources sub-module")
-    config.addinivalue_line("markers", "validation: Tests for the validation sub-module")
+    config.addinivalue_line(
+        "markers", "validation: Tests for the validation sub-module"
+    )
     config.addinivalue_line("markers", "utils: Tests for the utils sub-module")
 
 

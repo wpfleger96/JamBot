@@ -9,19 +9,14 @@ from jambot.models.metadata import Metadata
 from jambot.models.links import Links
 from jambot.models.uploads import Upload
 from jambot.models.appearances import Appearance
+from pydantic import BaseModel
 
 UM_BASE_URL = "https://allthings.umphreys.com/api/v2"
 GOOSE_BASE_URL = "https://elgoose.net/api/v2"
 
 SUPPORTED_BANDS_MAP = {
-    "um": {
-        "name": "Umphrey's McGee",
-        "url": UM_BASE_URL
-    },
-    "goose": {
-        "name": "Goose",
-        "url": GOOSE_BASE_URL
-    }
+    "um": {"name": "Umphrey's McGee", "url": UM_BASE_URL},
+    "goose": {"name": "Goose", "url": GOOSE_BASE_URL},
 }
 
 RESOURCE_TYPES = {
@@ -38,7 +33,7 @@ RESOURCE_TYPES = {
     "appearances": "Musician appearances",
 }
 
-RESOURCE_MODEL_MAP = {
+RESOURCE_MODEL_MAP: dict[str, type[BaseModel]] = {
     "setlists": Setlist,
     "latest": Latest,
     "shows": Show,
@@ -49,7 +44,7 @@ RESOURCE_MODEL_MAP = {
     "metadata": Metadata,
     "links": Links,
     "uploads": Upload,
-    "appearances": Appearance
+    "appearances": Appearance,
 }
 
 FORMATS = ["json", "html"]

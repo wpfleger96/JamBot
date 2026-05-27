@@ -1,10 +1,12 @@
 from pydantic import BaseModel
 from typing import Optional
 
+
 class Latest(BaseModel):
     """
     Model for a latest response. Latest consists of an array of dictionaries, each representing the most recent setlist entry.
     """
+
     uniqueid: str
     show_id: int
     showdate: str
