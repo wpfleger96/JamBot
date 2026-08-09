@@ -1,5 +1,4 @@
 from pydantic import BaseModel
-from typing import Optional
 
 
 class Latest(BaseModel):
@@ -23,7 +22,7 @@ class Latest(BaseModel):
     transition: str
     footnote: str
     isjamchart: int
-    jamchart_notes: Optional[str]
+    jamchart_notes: str | None
     venue_id: int
     shownotes: str
     showyear: int

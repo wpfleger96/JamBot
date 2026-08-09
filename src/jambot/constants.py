@@ -1,15 +1,16 @@
-from jambot.models.setlists import Setlist
+from pydantic import BaseModel
+
+from jambot.models.albums import Album
+from jambot.models.appearances import Appearance
+from jambot.models.jamcharts import Jamchart
 from jambot.models.latest import Latest
+from jambot.models.links import Links
+from jambot.models.metadata import Metadata
+from jambot.models.setlists import Setlist
 from jambot.models.shows import Show
 from jambot.models.songs import Song
-from jambot.models.venues import Venue
-from jambot.models.jamcharts import Jamchart
-from jambot.models.albums import Album
-from jambot.models.metadata import Metadata
-from jambot.models.links import Links
 from jambot.models.uploads import Upload
-from jambot.models.appearances import Appearance
-from pydantic import BaseModel
+from jambot.models.venues import Venue
 
 UM_BASE_URL = "https://allthings.umphreys.com/api/v2"
 GOOSE_BASE_URL = "https://elgoose.net/api/v2"

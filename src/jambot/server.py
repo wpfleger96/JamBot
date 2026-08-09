@@ -1,9 +1,10 @@
 """Jambot MCP Server main module."""
 
 import json
+from collections.abc import Awaitable, Callable
 from functools import wraps
 from importlib.metadata import version
-from typing import Any, Awaitable, Callable, List, Optional
+from typing import Any
 
 from fastmcp import FastMCP
 from fastmcp.exceptions import ToolError
@@ -92,10 +93,10 @@ async def get_resources(
     band: str,
     resource_type: str,
     format: str = "json",
-    order_by: Optional[str] = None,
-    direction: Optional[str] = None,
-    limit: Optional[int] = None,
-) -> List[BaseModel]:
+    order_by: str | None = None,
+    direction: str | None = None,
+    limit: int | None = None,
+) -> list[BaseModel]:
     """Get all resources for a given band and resource type.
 
     Args:
@@ -150,7 +151,7 @@ async def query_resources(
     band: str,
     resource_type: str,
     format: str = "json",
-) -> List[BaseModel]:
+) -> list[BaseModel]:
     """Query resources for a given band and resource type by a query column and query value.
 
     Args:

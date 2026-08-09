@@ -1,5 +1,4 @@
 from pydantic import BaseModel
-from typing import Optional
 
 
 class Upload(BaseModel):
@@ -28,5 +27,5 @@ class Upload(BaseModel):
     URL: str
     img_name: str
     upload_type: str
-    attribution: Optional[str]
+    attribution: str | None
     created_at: str

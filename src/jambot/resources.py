@@ -1,7 +1,6 @@
 """Async data layer for fetching jam band resources from public APIs."""
 
 import logging
-from typing import List, Optional
 
 from pydantic import BaseModel
 
@@ -18,10 +17,10 @@ async def list_resources(
     band: str,
     resource_type: str,
     format: str = "json",
-    order_by: Optional[str] = None,
-    direction: Optional[str] = None,
-    limit: Optional[int] = None,
-) -> List[BaseModel]:
+    order_by: str | None = None,
+    direction: str | None = None,
+    limit: int | None = None,
+) -> list[BaseModel]:
     """Fetch all resources for a band+resource_type."""
     validation.validate_band(band)
     validation.validate_resource_type(resource_type)
@@ -88,7 +87,7 @@ async def query_resources_by_column(
     band: str,
     resource_type: str,
     format: str = "json",
-) -> List[BaseModel]:
+) -> list[BaseModel]:
     """Query resources by an arbitrary column/value pair."""
     validation.validate_band(band)
     validation.validate_resource_type(resource_type)
