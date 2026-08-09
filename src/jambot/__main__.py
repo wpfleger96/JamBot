@@ -21,7 +21,7 @@ def main():
     logger.info(f"Starting Jambot v{version('jambot')}...")
     try:
         mcp.run()
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         logger.error(f"Server failed to start: {e}")
         return 1
 

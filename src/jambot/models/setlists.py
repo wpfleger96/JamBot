@@ -1,5 +1,5 @@
+
 from pydantic import BaseModel
-from typing import Optional
 
 
 class Setlist(BaseModel):
@@ -52,41 +52,41 @@ class Setlist(BaseModel):
     ]
     """
 
-    artist: Optional[str]
-    artist_id: Optional[int]
-    city: Optional[str]
-    country: Optional[str]
-    css_class: Optional[str]
+    artist: str | None
+    artist_id: int | None
+    city: str | None
+    country: str | None
+    css_class: str | None
     footnote: str
     isjam: int
     isjamchart: int
     isoriginal: int
-    isrecommended: Optional[int]
+    isrecommended: int | None
     isreprise: int
-    isverified: Optional[int]
-    jamchart_notes: Optional[str]
-    opener: Optional[str]
+    isverified: int | None
+    jamchart_notes: str | None
+    opener: str | None
     original_artist: str
-    permalink: Optional[str]
+    permalink: str | None
     position: int
     setnumber: str
-    settype: Optional[str]
+    settype: str | None
     show_id: int
-    showdate: Optional[str]
-    shownotes: Optional[str]
-    showorder: Optional[int]
-    showtitle: Optional[str]
-    showyear: Optional[int]
+    showdate: str | None
+    shownotes: str | None
+    showorder: int | None
+    showtitle: str | None
+    showyear: int | None
     slug: str
     song_id: int
     songname: str
-    soundcheck: Optional[str]
-    state: Optional[str]
-    tour_id: Optional[int]
-    tourname: Optional[str]
-    tracktime: Optional[str]
+    soundcheck: str | None
+    state: str | None
+    tour_id: int | None
+    tourname: str | None
+    tracktime: str | None
     transition: str
     transition_id: int
     uniqueid: str
-    venue_id: Optional[int]
-    venuename: Optional[str]
+    venue_id: int | None
+    venuename: str | None

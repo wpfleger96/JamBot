@@ -1,5 +1,5 @@
+
 from pydantic import BaseModel
-from typing import Optional
 
 
 class Jamchart(BaseModel):
@@ -36,11 +36,11 @@ class Jamchart(BaseModel):
     uniqueid: str
     setnumber: str
     position: int
-    footnote: Optional[str]
+    footnote: str | None
     tracktime: str
     jamchartnote: str
     song_id: int
-    isrecommended: Optional[int]
+    isrecommended: int | None
     showid: int
     songname: str
     song_slug: str

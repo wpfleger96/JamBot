@@ -1,5 +1,5 @@
+
 from pydantic import BaseModel
-from typing import Optional
 
 
 class Album(BaseModel):
@@ -36,10 +36,10 @@ class Album(BaseModel):
     artist_id: int
     album_url: str
     releasedate: str
-    album_notes: Optional[str]
-    song_name: Optional[str]
-    song_url: Optional[str]
-    original_artist: Optional[str]
+    album_notes: str | None
+    song_name: str | None
+    song_url: str | None
+    original_artist: str | None
     position: int
     islive: int
     tracktime: str

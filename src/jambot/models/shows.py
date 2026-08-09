@@ -1,5 +1,5 @@
+
 from pydantic import BaseModel
-from typing import Optional
 
 
 class Show(BaseModel):
@@ -41,7 +41,7 @@ class Show(BaseModel):
     permalink: str
     artist_id: int
     artist: str
-    showtitle: Optional[str]
+    showtitle: str | None
     venue_id: int
     venuename: str
     location: str
@@ -57,4 +57,4 @@ class Show(BaseModel):
     show_month: int
     show_monthname: str
     updated_at: str
-    created_at: Optional[str]
+    created_at: str | None

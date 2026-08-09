@@ -1,9 +1,9 @@
-from typing import Any, Dict, Type
+from typing import Any
 
 from pydantic import BaseModel
 
 
-def model_to_schema(model_class: Type[BaseModel]) -> Dict[str, Any]:
+def model_to_schema(model_class: type[BaseModel]) -> dict[str, Any]:
     """Convert a Pydantic model class to a schema dictionary.
 
     Args:
