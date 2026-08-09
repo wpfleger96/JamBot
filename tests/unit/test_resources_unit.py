@@ -56,7 +56,10 @@ async def test_list_resources_http_error_wrapped():
     def handler(request: httpx.Request) -> httpx.Response:
         return httpx.Response(500, text="server error")
 
-    with patch("jambot.resources.get_client", return_value=_client(handler)), pytest.raises(JambotError) as excinfo:
+    with (
+        patch("jambot.resources.get_client", return_value=_client(handler)),
+        pytest.raises(JambotError) as excinfo,
+    ):
         await resources.list_resources(
             band="goose", resource_type="setlists", format="json"
         )
